@@ -1,0 +1,12 @@
+[package]
+name = "backend"
+version = "0.1.0"
+authors = ["Taryn Hill <taryn@phrohdoh.com>"]
+
+[dependencies]
+serde = "0.9.7"
+rocket_codegen = "0.2.0"
+rocket = "0.2.0"
+serde_json = "0.9.6"
+rocket_contrib = "0.2.0"
+serde_derive = "0.9.6"

@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="rust-and-polymer-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <iron-ajax
+        id="ajax"
+        url="http://localhost:8000/hello"
+        method="POST"
+        handle-as="json"
+        content-type="application/json"
+        on-response="handleResponse"
+        last-response="_lastResponse"
+        loading="{{_loading}}"
+        debounce-duration="300"></iron-ajax>
+    <h2>Message from Rust: [[_msg]]</h2>
+    <paper-button on-tap="onClickFoo">Click me</paper-button>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'rust-and-polymer-app',
+      properties: {
+        prop1: { type: String, value: 'rust-and-polymer-app', },
+        _msg: { type: Object, notify: true },
+        _lastResponse: { type: Object, notify: true },
+        _loading: { type: Boolean, notify: true },
+      },
+      handleResponse: function(e) {
+        var responseObj = e.detail.response;
+        this.set("_msg", responseObj.msg);
+      },
+      onClickFoo: function() {
+        this.$.ajax.body = { "name": "Polymer" };
+        this.$.ajax.generateRequest();
+      }
+    });
+  </script>
+</dom-module>
