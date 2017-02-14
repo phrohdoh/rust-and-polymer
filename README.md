@@ -42,3 +42,5 @@ $ google-chrome-no-cors
 ```
 
 Which will launch Google Chrome in an insecure mode so I don't have to muck with CORS yet.
+
+Now you can play around with the frontend by navigating to `localhost:8080` (or whichever port `polymer serve` picks).
