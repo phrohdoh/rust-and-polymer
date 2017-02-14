@@ -17,7 +17,7 @@ require() {
 
 PWD="$(pwd)"
 
-[[ "$PWD" == *"rust-and-polymer" ]] || err "setup.bash must be ran from the project's root."
+[[ -f "$PWD/setup.bash" ]] || err "setup.bash must be ran from the project's root."
 
 require cargo "\`cargo\` is missing! Please visit https://www.rust-lang.org/en-US/install.html"
 require diesel "\`diesel\` is missing! Run \`cargo install diesel_cli\` to install it."
