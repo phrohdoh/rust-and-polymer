@@ -24,7 +24,7 @@
 
     <h2>Transactions from Rust:</h2>
     <template is="dom-repeat" items="[[_transactions]]">
-      <p>[[item.timestamp]] [[item.amount]]</p>
+      <p>[[item.timestamp]] [[item.amount]] [[item.memo]]</p>
     </template>
 
     <paper-input value="{{_payeeName}}"></paper-input>

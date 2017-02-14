@@ -4,6 +4,7 @@ pub struct Transaction {
     pub payee_id: i32,
     pub amount: f32,
     pub timestamp: i32,
+    pub memo: Option<String>,
 }
 
 #[derive(Queryable, Deserialize, Serialize)]
