@@ -24,11 +24,11 @@ mod schema;
 mod models;
 
 #[derive(Deserialize)]
-struct PayeesReq {
+struct TransactionByPayeeNameReq {
     pub payee_name: String,
 }
 
-type PayeesResp = Vec<models::Payee>;
+type TransactionByPayeeNameResp = Vec<models::Transaction>;
 
 fn establish_connection() -> SqliteConnection {
     dotenv().ok();
@@ -37,18 +37,22 @@ fn establish_connection() -> SqliteConnection {
     SqliteConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
-#[post("/payees", format = "application/json", data = "<req>")]
-fn api_payees(req: JSON<PayeesReq>) -> JSON<PayeesResp> {
-    use schema::payees::dsl::*;
+fn db_get_transactions_by_payee_name(ref_connection: &SqliteConnection, payee_name: &str) -> Vec<models::Transaction> {
+    use schema::payees;
+    use schema::transactions;
 
+    transactions::table.filter(transactions::payee_id.eq_any(payees::table.select(payees::id).filter(payees::name.eq(payee_name))))
+        .load::<models::Transaction>(ref_connection).unwrap_or(vec![])
+}
+
+#[post("/transactions_by_payee_name", format = "application/json", data = "<req>")]
+fn api_transactions_by_payee_name(req: JSON<TransactionByPayeeNameReq>) -> JSON<TransactionByPayeeNameResp> {
     let conn = establish_connection();
-    let results = payees.filter(name.eq(&req.payee_name))
-        .load::<models::Payee>(&conn)
-        .expect("Error loading payees");
 
+    let results = db_get_transactions_by_payee_name(&conn, &req.payee_name);
     JSON(results)
 }
 
 fn main() {
-    rocket::ignite().mount("/", routes![api_payees]).launch();
+    rocket::ignite().mount("/", routes![api_transactions_by_payee_name]).launch();
 }

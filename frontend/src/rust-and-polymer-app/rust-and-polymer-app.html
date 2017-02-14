@@ -11,21 +11,22 @@
     </style>
     <iron-ajax
         id="ajax"
-        url="http://localhost:8000/payees"
+        url="http://localhost:8000/transactions_by_payee_name"
         method="POST"
         handle-as="json"
         content-type="application/json"
         on-response="handleResponse"
         last-response="_lastResponse"
         loading="{{_loading}}"
-        debounce-duration="300"></iron-ajax>
-    <h2>Payees from Rust:</h2>
+        debounce-duration="300">
+    </iron-ajax>
 
-    <template is="dom-repeat" items="[[_payees]]">
-      <p>[[item.name]]</p>
+    <h2>Payees from Rust:</h2>
+    <template is="dom-repeat" items="[[_transactions]]">
+      <p>[[item.timestamp]] [[item.amount]]</p>
     </template>
 
-    <paper-button on-tap="onClickFoo">Click me</paper-button>
+    <paper-button on-tap="onButtonClick">Get [[_payeeName]] transactions!</paper-button>
   </template>
 
   <script>
@@ -33,16 +34,17 @@
       is: 'rust-and-polymer-app',
       properties: {
         prop1: { type: String, value: 'rust-and-polymer-app', },
-        _payees: { type: Array, notify: true },
+        _payeeName: { type: String, notify: true, value: "QT" },
+        _transactions: { type: Array, notify: true },
         _lastResponse: { type: Object, notify: true },
         _loading: { type: Boolean, notify: true },
       },
       handleResponse: function(e) {
         var responseArr = e.detail.response;
-        this.set("_payees", responseArr);
+        this.set("_transactions", responseArr);
       },
-      onClickFoo: function() {
-        this.$.ajax.body = { "payee_name": "QT" };
+      onButtonClick: function() {
+        this.$.ajax.body = { "payee_name": this._payeeName };
         this.$.ajax.generateRequest();
       }
     });
