@@ -1,2 +1,4 @@
 backend/target
 frontend/bower_components
+.env
+*.db

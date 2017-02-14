@@ -10,3 +10,6 @@ rocket = "0.2.0"
 serde_json = "0.9.6"
 rocket_contrib = "0.2.0"
 serde_derive = "0.9.6"
+diesel = "0.10"
+diesel_codegen = { version = "0.10", features = ["sqlite"] }
+dotenv = "0.8"
