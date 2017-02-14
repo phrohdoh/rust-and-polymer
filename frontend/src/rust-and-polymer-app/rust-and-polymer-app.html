@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 <dom-module id="rust-and-polymer-app">
   <template>
@@ -21,11 +22,12 @@
         debounce-duration="300">
     </iron-ajax>
 
-    <h2>Payees from Rust:</h2>
+    <h2>Transactions from Rust:</h2>
     <template is="dom-repeat" items="[[_transactions]]">
       <p>[[item.timestamp]] [[item.amount]]</p>
     </template>
 
+    <paper-input value="{{_payeeName}}"></paper-input>
     <paper-button on-tap="onButtonClick">Get [[_payeeName]] transactions!</paper-button>
   </template>
 
