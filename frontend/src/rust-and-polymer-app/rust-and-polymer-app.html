@@ -24,7 +24,7 @@
 
     <h2>Transactions from Rust:</h2>
     <template is="dom-repeat" items="[[_transactions]]">
-      <p>[[item.timestamp]] [[item.amount]] [[item.memo]]</p>
+      <p>[[timestamp_to_date(item.timestamp)]] [[item.amount]] [[item.memo]]</p>
     </template>
 
     <paper-input value="{{_payeeName}}"></paper-input>
@@ -49,7 +49,10 @@
         var q = this.$.ajax;
         q.params = { "payee_name": this._payeeName };
         q.generateRequest();
-      }
+      },
+      timestamp_to_date: function(ts) {
+        return new Date(ts).toString();
+      },
     });
   </script>
 </dom-module>
