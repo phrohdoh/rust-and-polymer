@@ -9,6 +9,8 @@ Combining [Polymer](http://polymer-project.org/) and [Rust](http://rust-lang.org
 $ ./setup.bash
 ```
 
+Then add at least a single payee and transaction to the sqlite3 `.db` file created at `./backend/test.db`.
+
 ### Running the backend
 
 ```
