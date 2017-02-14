@@ -12,8 +12,8 @@
     </style>
     <iron-ajax
         id="ajax"
-        url="http://localhost:8000/transactions_by_payee_name"
-        method="POST"
+        url="http://localhost:8000/api/transactions"
+        method="GET"
         handle-as="json"
         content-type="application/json"
         on-response="handleResponse"
@@ -46,8 +46,9 @@
         this.set("_transactions", responseArr);
       },
       onButtonClick: function() {
-        this.$.ajax.body = { "payee_name": this._payeeName };
-        this.$.ajax.generateRequest();
+        var q = this.$.ajax;
+        q.params = { "payee_name": this._payeeName };
+        q.generateRequest();
       }
     });
   </script>

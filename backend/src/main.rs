@@ -1,4 +1,4 @@
-#![feature(plugin)]
+#![feature(plugin, custom_derive)]
 #![plugin(rocket_codegen)]
 
 extern crate rocket;
@@ -23,7 +23,7 @@ use std::env;
 mod schema;
 mod models;
 
-#[derive(Deserialize)]
+#[derive(FromForm)]
 struct TransactionByPayeeNameReq {
     pub payee_name: String,
 }
@@ -45,12 +45,10 @@ fn db_get_transactions_by_payee_name(ref_connection: &SqliteConnection, payee_na
         .load::<models::Transaction>(ref_connection).unwrap_or(vec![])
 }
 
-#[post("/transactions_by_payee_name", format = "application/json", data = "<req>")]
-fn api_transactions_by_payee_name(req: JSON<TransactionByPayeeNameReq>) -> JSON<TransactionByPayeeNameResp> {
+#[get("/api/transactions?<req>")]
+fn api_transactions_by_payee_name(req: TransactionByPayeeNameReq) -> JSON<TransactionByPayeeNameResp> {
     let conn = establish_connection();
-
-    let results = db_get_transactions_by_payee_name(&conn, &req.payee_name);
-    JSON(results)
+    JSON(db_get_transactions_by_payee_name(&conn, &req.payee_name))
 }
 
 fn main() {
