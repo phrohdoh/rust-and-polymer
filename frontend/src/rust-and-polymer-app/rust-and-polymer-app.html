@@ -11,7 +11,7 @@
     </style>
     <iron-ajax
         id="ajax"
-        url="http://localhost:8000/hello"
+        url="http://localhost:8000/transactions"
         method="POST"
         handle-as="json"
         content-type="application/json"
@@ -37,7 +37,7 @@
         this.set("_msg", responseObj.msg);
       },
       onClickFoo: function() {
-        this.$.ajax.body = { "name": "Polymer" };
+        this.$.ajax.body = { "payee_name": "QT" };
         this.$.ajax.generateRequest();
       }
     });
