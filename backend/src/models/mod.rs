@@ -1,13 +1,13 @@
 #[derive(Queryable, Deserialize, Serialize)]
 pub struct Transaction {
-    pub id: u64,
-    pub payee_id: u64,
-    pub amount: f64,
-    pub timestamp: u64,
+    pub id: i32,
+    pub payee_id: i32,
+    pub amount: f32,
+    pub timestamp: i32,
 }
 
 #[derive(Queryable, Deserialize, Serialize)]
 pub struct Payee {
-    pub id: u64,
+    pub id: i32,
     pub name: String,
 }

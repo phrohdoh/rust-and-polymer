@@ -20,12 +20,15 @@ use dotenv::dotenv;
 
 use std::env;
 
+mod schema;
 mod models;
 
 #[derive(Deserialize)]
-struct HelloReq {
+struct PayeesReq {
     pub payee_name: String,
 }
+
+type PayeesResp = Vec<models::Payee>;
 
 fn establish_connection() -> SqliteConnection {
     dotenv().ok();
@@ -34,11 +37,18 @@ fn establish_connection() -> SqliteConnection {
     SqliteConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
-#[post("/transactions", format = "application/json", data = "<req>")]
-fn transactions(req: JSON<HelloReq>) -> JSON<Vec<models::Transaction>> {
-    JSON(vec![])
+#[post("/payees", format = "application/json", data = "<req>")]
+fn api_payees(req: JSON<PayeesReq>) -> JSON<PayeesResp> {
+    use schema::payees::dsl::*;
+
+    let conn = establish_connection();
+    let results = payees.filter(name.eq(&req.payee_name))
+        .load::<models::Payee>(&conn)
+        .expect("Error loading payees");
+
+    JSON(results)
 }
 
 fn main() {
-    rocket::ignite().mount("/", routes![transactions]).launch();
+    rocket::ignite().mount("/", routes![api_payees]).launch();
 }

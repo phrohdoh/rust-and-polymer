@@ -11,7 +11,7 @@
     </style>
     <iron-ajax
         id="ajax"
-        url="http://localhost:8000/transactions"
+        url="http://localhost:8000/payees"
         method="POST"
         handle-as="json"
         content-type="application/json"
@@ -19,7 +19,12 @@
         last-response="_lastResponse"
         loading="{{_loading}}"
         debounce-duration="300"></iron-ajax>
-    <h2>Message from Rust: [[_msg]]</h2>
+    <h2>Payees from Rust:</h2>
+
+    <template is="dom-repeat" items="[[_payees]]">
+      <p>[[item.name]]</p>
+    </template>
+
     <paper-button on-tap="onClickFoo">Click me</paper-button>
   </template>
 
@@ -28,13 +33,13 @@
       is: 'rust-and-polymer-app',
       properties: {
         prop1: { type: String, value: 'rust-and-polymer-app', },
-        _msg: { type: Object, notify: true },
+        _payees: { type: Array, notify: true },
         _lastResponse: { type: Object, notify: true },
         _loading: { type: Boolean, notify: true },
       },
       handleResponse: function(e) {
-        var responseObj = e.detail.response;
-        this.set("_msg", responseObj.msg);
+        var responseArr = e.detail.response;
+        this.set("_payees", responseArr);
       },
       onClickFoo: function() {
         this.$.ajax.body = { "payee_name": "QT" };
