@@ -29,7 +29,6 @@ log "Copying example.env to .env" ; cp example.env .env
 cd ./backend
 
 log "Running \`diesel setup\`" ; diesel setup
-log "Running \`diesel migration run\`" ; diesel migration run
 log "Running \`cargo build\`" ; cargo build --quiet
 
 cd ../frontend
